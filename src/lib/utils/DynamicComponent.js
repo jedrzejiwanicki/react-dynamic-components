@@ -7,35 +7,44 @@ export class DynamicComponent {
 	afterClosedSubject = new Subject();
 	onOpenedSubject = new Subject();
 
-	constructor(component, props, index) {
+	constructor(component, props) {
 		this._component = component;
 		this._props = props;
-		this._index = index;
+		this._index = ModalSubject.getIndex();
 	}
 
 	get index() {
-		return  this._index;
+		return this._index;
+	}
+
+	get props() {
+		return this._props;
 	}
 
 	get component() {
-		const { _component: Component } = this;
+		const {_component: Component } = this;
 
-		return <Component {...this._props} close={(data) => this.close(data)} />
+		return <Component
+			{...this.props}
+			close={this.close}
+			index={this.index}
+			key={this.index}
+		/>
 	}
 
-	close(data) {
+	close = (data) => {
 		this.afterClosedSubject.next(data);
 		ModalSubject.unregister(this.index);
 	}
 
 	show() {
-		
-		return this.onOpen();
+		ModalSubject.register(this.component, this.index);
+		this.onOpenedSubject.next();
+
+		return this;
 	}
 
 	onOpen() {
-		this.onOpenedSubject.next();
-
 		return this.onOpenedSubject;
 	}
 

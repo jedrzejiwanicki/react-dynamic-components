@@ -4,7 +4,7 @@ export const ModalSubject = (function() {
 	let subject = new Subject();
 	let modalArray = [];
 
-	const getModalArrayLength = () => modalArray.length;
+	const getIndex = () => modalArray.length;
 
 	const register = (newModal) => {
 		modalArray = [...modalArray, newModal];
@@ -14,13 +14,13 @@ export const ModalSubject = (function() {
 	};
 
 	const unregister = (modalIndex) => {
-		modalArray = modalArray.filter(instance => instance.index !== modalIndex);
+		modalArray = modalArray.filter(instance => instance.props.index !== modalIndex);
 
 		subject.next(modalArray);
 	};
 
 	return {
-		getModalArrayLength,
+		getIndex,
 		subscribe: subscriber => subject.subscribe(subscriber),
 		unregister,
 		register,

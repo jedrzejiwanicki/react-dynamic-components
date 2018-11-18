@@ -11,7 +11,7 @@ export class ModalOutlet extends Component {
 	}
 
 	get modals() {
-		return this.state.modals.map(instance => instance.component)
+		return this.state.modals.map(Component => Component)
 	}
 
 	get rootElement() {
@@ -25,8 +25,6 @@ export class ModalOutlet extends Component {
 	}
 
 	render() {
-
-		console.log(this.modals)
 		return (
 			ReactDOM.createPortal(
 				<Fragment>

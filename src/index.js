@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import { ModalProvider, ModalOutlet } from "./lib/api";
+import { DynamicComponent, ModalOutlet } from "./lib/api";
 
 function ModalConfirm({ close, title, description }) {
 	return (
@@ -17,8 +17,12 @@ function ModalConfirm({ close, title, description }) {
 class App extends Component {
 	showModalConfirm = () => {
 		const modalProps = { title: 'Confirm', description: 'Are you sure you want to do that?' }
+		const componentInstance = new DynamicComponent(ModalConfirm, modalProps);
 
-		ModalProvider.show(ModalConfirm, modalProps)
+		componentInstance.onOpen().subscribe(() => console.log('opened!'));
+
+		componentInstance
+			.show()
 			.afterClosed()
 			.subscribe(({ confirmed }) => console.log(confirmed))
 	}
